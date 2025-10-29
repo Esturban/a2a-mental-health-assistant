@@ -1,9 +1,5 @@
 /**
- * Shared Type Definitions
- *
- * This file contains all TypeScript interfaces and types used across
- * the travel planning demo components. Centralizing types makes them
- * easier to maintain and reuse.
+ * Shared Type Definitions for the Mental Health Booking Assistant
  */
 
 import { ActionRenderProps } from "@copilotkit/react-core";
@@ -12,10 +8,6 @@ import { ActionRenderProps } from "@copilotkit/react-core";
 // A2A Action Types
 // ============================================================================
 
-/**
- * Type for the send_message_to_a2a_agent action parameters
- * Used when the orchestrator sends tasks to A2A agents
- */
 export type MessageActionRenderProps = ActionRenderProps<
   [
     {
@@ -31,45 +23,52 @@ export type MessageActionRenderProps = ActionRenderProps<
   ]
 >;
 
-/**
- * Type for the budget approval action parameters
- * Used in Human-in-the-Loop (HITL) budget approval workflow
- */
-export type BudgetApprovalActionRenderProps = ActionRenderProps<
+export type CostApprovalActionRenderProps = ActionRenderProps<
   [
     {
-      readonly name: "budgetData";
+      readonly name: "costEstimate";
       readonly type: "object";
-      readonly description: "The budget data to approve";
+      readonly description: "The therapy cost estimate requiring confirmation";
     }
   ]
 >;
 
-/**
- * Type for trip requirements action parameters
- * Used to gather essential trip information at the start
- */
-export type TripRequirementsActionRenderProps = ActionRenderProps<
+export type ClientIntakeActionRenderProps = ActionRenderProps<
   [
     {
-      readonly name: "city";
+      readonly name: "clientName";
       readonly type: "string";
-      readonly description: "The destination city (may be pre-filled from user message)";
+      readonly description: "Preferred name of the client";
     },
     {
-      readonly name: "numberOfDays";
-      readonly type: "number";
-      readonly description: "Number of days for the trip (1-7)";
-    },
-    {
-      readonly name: "numberOfPeople";
-      readonly type: "number";
-      readonly description: "Number of people in the group (1-15)";
-    },
-    {
-      readonly name: "budgetLevel";
+      readonly name: "primaryConcern";
       readonly type: "string";
-      readonly description: "Budget level: Economy, Comfort, or Premium";
+      readonly description: "Main reason the client is seeking support";
+    },
+    {
+      readonly name: "therapyGoals";
+      readonly type: "string";
+      readonly description: "Key outcomes the client is hoping for";
+    },
+    {
+      readonly name: "preferredFormat";
+      readonly type: "string";
+      readonly description: "Preferred session format (in-person, virtual, hybrid)";
+    },
+    {
+      readonly name: "availability";
+      readonly type: "string";
+      readonly description: "Days/times that work well for the client";
+    },
+    {
+      readonly name: "insurance";
+      readonly type: "string";
+      readonly description: "Insurance provider or payment preference";
+    },
+    {
+      readonly name: "notes";
+      readonly type: "string";
+      readonly description: "Additional context or safety considerations";
     }
   ]
 >;
@@ -78,130 +77,93 @@ export type TripRequirementsActionRenderProps = ActionRenderProps<
 // Agent Data Structures
 // ============================================================================
 
-/**
- * Time slot structure for activities during a day
- * Used in the itinerary to organize morning/afternoon/evening activities
- */
-export interface TimeSlot {
-  activities: string[];
-  location: string;
+export interface SessionPlan {
+  focus: string;
+  modality: string;
+  facilitatorProfile: string;
+  keyObjectives: string[];
+  betweenSessionSupport: string[];
 }
 
-/**
- * Meals structure for a day
- * Contains breakfast, lunch, and dinner recommendations
- */
-export interface Meals {
-  breakfast: string;
-  lunch: string;
-  dinner: string;
-}
-
-/**
- * Single day itinerary structure
- * Contains all activities and meals for one day of travel
- */
-export interface DayItinerary {
-  day: number;
-  title: string;
-  morning: TimeSlot;
-  afternoon: TimeSlot;
-  evening: TimeSlot;
-  meals: Meals;
-}
-
-/**
- * Complete itinerary data from Itinerary Agent
- * Structured JSON output from the LangGraph itinerary agent
- */
-export interface ItineraryData {
-  destination: string;
-  days: number;
-  itinerary: DayItinerary[];
-}
-
-/**
- * Restaurant recommendations data from Restaurant Agent
- * Day-by-day meal recommendations that populate the itinerary meals section
- */
-export interface RestaurantData {
-  destination: string;
-  days: number;
-  meals: Array<{
-    day: number;
-    breakfast: string;
-    lunch: string;
-    dinner: string;
-  }>;
-}
-
-/**
- * Budget category breakdown
- * Individual category with amount and percentage of total
- */
-export interface BudgetCategory {
-  category: string;
-  amount: number;
-  percentage: number;
-}
-
-/**
- * Complete budget data from Budget Agent
- * Structured JSON output from the ADK budget agent
- */
-export interface BudgetData {
-  totalBudget: number;
-  currency: string;
-  breakdown: BudgetCategory[];
+export interface WeeklyPlan {
+  week: number;
+  theme: string;
+  primarySession: SessionPlan;
+  complementarySupport: string;
   notes: string;
 }
 
-/**
- * Daily weather forecast
- * Contains weather conditions, temperatures, and description
- */
-export interface DailyWeather {
-  day: number;
-  date: string;
-  condition: string;
-  highTemp: number;
-  lowTemp: number;
-  precipitation: number;
-  humidity: number;
-  windSpeed: number;
-  description: string;
+export interface CarePlanData {
+  clientName: string;
+  durationWeeks: number;
+  focusAreas: string[];
+  plan: WeeklyPlan[];
+  followUpRecommendations: string[];
+  safetyConsiderations: string[];
 }
 
-/**
- * Complete weather data from Weather Agent
- * Structured JSON output from the ADK weather agent
- */
-export interface WeatherData {
-  destination: string;
-  forecast: DailyWeather[];
-  travelAdvice: string;
-  bestDays: number[];
+export interface AvailabilitySlot {
+  date: string;
+  day: string;
+  slots: string[];
+  isVirtual: boolean;
+}
+
+export interface AvailabilityData {
+  therapistName: string;
+  credentials: string;
+  modalities: string[];
+  primaryFocus: string;
+  availability: AvailabilitySlot[];
+  bookingNotes: string;
+  telehealthOptions: string[];
+}
+
+export interface ResourceItem {
+  title: string;
+  type: string;
+  url: string;
+  description: string;
+  format: string;
+}
+
+export interface ResourceCategory {
+  focusArea: string;
+  description: string;
+  resources: ResourceItem[];
+}
+
+export interface ResourceLibraryData {
+  overview: string;
+  categories: ResourceCategory[];
+}
+
+export interface CostBreakdownItem {
+  category: string;
+  amount: number;
+  covered: boolean;
+  notes: string;
+}
+
+export interface CostEstimateData {
+  estimatedMonthlyCost: number;
+  currency: string;
+  coverageSummary: string;
+  breakdown: CostBreakdownItem[];
+  paymentConsiderations: string[];
 }
 
 // ============================================================================
 // Component Props
 // ============================================================================
 
-/**
- * Props for the main TravelChat component
- * Callbacks to update parent component state with agent data
- */
-export interface TravelChatProps {
-  onItineraryUpdate?: (data: ItineraryData | null) => void;
-  onBudgetUpdate?: (data: BudgetData | null) => void;
-  onWeatherUpdate?: (data: WeatherData | null) => void;
-  onRestaurantUpdate?: (data: RestaurantData | null) => void;
+export interface TherapyChatProps {
+  onCarePlanUpdate?: (data: CarePlanData | null) => void;
+  onAvailabilityUpdate?: (data: AvailabilityData | null) => void;
+  onResourcesUpdate?: (data: ResourceLibraryData | null) => void;
+  onCostUpdate?: (data: CostEstimateData | null) => void;
 }
 
-/**
- * Agent styling configuration
- * Used to style agent badges with consistent colors and icons
- */
 export interface AgentStyle {
   bgColor: string;
   textColor: string;

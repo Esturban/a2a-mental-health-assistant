@@ -1,8 +1,8 @@
-# AG-UI + A2A Multi-Agent Communication Demo
+# Mental Health Booking Assistant
 
-A demonstration of Agent-to-Agent (A2A) communication between different AI agent frameworks using the AG-UI Protocol and A2A Middleware.
+A multi-agent demonstration showing how therapist intake, availability, care planning, and cost conversations can be orchestrated with AG-UI and the A2A middleware. Four specialized agents (LangGraph + ADK) collaborate with an orchestrator to support therapists and care teams.
 
-![Screenshot of a demo](demo.png)
+![Screenshot of the assistant](demo.png)
 
 ## Quick Start
 
@@ -47,44 +47,44 @@ This starts:
 
 - UI on `http://localhost:3000`
 - Orchestrator on `http://localhost:9000`
-- Itinerary Agent on `http://localhost:9001`
-- Budget Agent on `http://localhost:9002`
-- Restaurant Agent on `http://localhost:9003`
-- Weather Agent on `http://localhost:9005`
+- Care Plan Agent on `http://localhost:9001`
+- Insurance Agent on `http://localhost:9002`
+- Resources Agent on `http://localhost:9003`
+- Availability Agent on `http://localhost:9005`
 
 ## Usage
 
-Try asking: "Plan a 3-day trip to Tokyo" or "I want to visit New York for 5 days"
+Ask the assistant to support a therapist, e.g.: "Help me onboard a new anxiety client on Tuesdays" or "Find trauma-focused therapists with evening openings and outline the care plan".
 
 The orchestrator will coordinate the agents to:
 
-1. Collect trip requirements (destination, days, people, budget level)
-2. Generate an itinerary
-3. Provide weather forecast
-4. Recommend restaurants for each day
-5. Estimate budget and request approval
+1. Collect intake information (client name, primary concern, goals, logistics)
+2. Generate a multi-week therapy care plan
+3. Surface therapist availability and telehealth options
+4. Compile supportive resources for homework and crisis support
+5. Estimate costs and request human confirmation
 
-Agent interactions are visible in the UI with message flow visualization.
+All agent interactions are visible in the UI through the A2A message flow visualization.
 
 ## What This Demonstrates
 
-This demo shows how specialized agents built with different frameworks can communicate via the A2A protocol:
+This experience highlights cross-framework collaboration for mental health operations:
 
 ### LangGraph Agents (Python + OpenAI)
 
-- **Itinerary Agent** (Port 9001) - Creates day-by-day travel itineraries
-- **Restaurant Agent** (Port 9003) - Recommends meal plans
+- **Care Plan Agent** (Port 9001) – Builds a structured multi-week therapy roadmap
 
 ### ADK Agents (Python + Gemini)
 
-- **Budget Agent** (Port 9002) - Estimates travel costs
-- **Weather Agent** (Port 9005) - Provides weather forecasts
+- **Insurance Agent** (Port 9002) – Estimates monthly costs and coverage details
+- **Resources Agent** (Port 9003) – Curates self-guided supports and crisis resources
+- **Availability Agent** (Port 9005) – Summarizes therapist openings and telehealth notes
 
 ### Orchestrator
 
-- **Orchestrator Agent** (Port 9000) - Coordinates all agents via A2A middleware
+- **Coordinator Agent** (Port 9000) – Manages intake, agent messaging, and HITL approvals via A2A middleware
 
-The demo includes multi-framework integration, structured JSON outputs, generative UI components, human-in-the-loop workflows, and real-time message visualization
+The demo includes structured JSON responses, generative UI, human-in-the-loop approvals, and domain-specific orchestration.
 
 ## Architecture
 
@@ -94,18 +94,18 @@ The demo includes multi-framework integration, structured JSON outputs, generati
 └────────────┬─────────────────────────────┘
              │ AG-UI Protocol
 ┌────────────┴─────────────────────────────┐
-│ A2A Middleware                            │
-│ - Routes messages between agents          │
+│ A2A Middleware                           │
+│ - Routes messages between agents         │
 └──────┬───────────────────────────────────┘
        │ A2A Protocol
        │
-       ├─────► LangGraph Agents (OpenAI)
-       │       ├── Itinerary (9001)
-       │       └── Restaurant (9003)
+       ├─────► LangGraph Agent (OpenAI)
+       │       └── Care Plan (9001)
        │
        └─────► ADK Agents (Gemini)
-               ├── Budget (9002)
-               └── Weather (9005)
+               ├── Insurance (9002)
+               ├── Resources (9003)
+               └── Availability (9005)
        ▲
        │
 ┌──────┴──────────┐
@@ -117,22 +117,25 @@ The demo includes multi-framework integration, structured JSON outputs, generati
 ## Project Structure
 
 ```
-ag-ui-a2a-demo/
+mental-health-assistant/
 ├── app/
 │   ├── api/copilotkit/route.ts       # A2A middleware setup
-│   └── page.tsx                      # Main UI
+│   └── page.tsx                      # Main UI workspace
 │
 ├── components/
 │   ├── a2a/                          # A2A message components
-│   ├── travel-chat.tsx               # Chat orchestration
-│   └── [other UI components]
+│   ├── therapy-chat.tsx              # Chat orchestration
+│   ├── CarePlanCard.tsx              # Care plan display
+│   ├── AvailabilityCard.tsx          # Therapist availability
+│   ├── CostBreakdownCard.tsx         # Financial overview
+│   └── ResourceLibrary.tsx           # Supportive resource list
 │
 ├── agents/                           # Python agents
 │   ├── orchestrator.py               # Orchestrator (9000)
-│   ├── itinerary_agent.py            # LangGraph (9001)
-│   ├── budget_agent.py               # ADK (9002)
-│   ├── restaurant_agent.py           # LangGraph (9003)
-│   └── weather_agent.py              # ADK (9005)
+│   ├── care_plan_agent.py            # LangGraph care planning (9001)
+│   ├── insurance_agent.py            # ADK insurance estimator (9002)
+│   ├── resources_agent.py            # ADK resource curator (9003)
+│   └── availability_agent.py         # ADK availability summarizer (9005)
 │
 └── .env.example
 ```
@@ -146,14 +149,11 @@ ag-ui-a2a-demo/
 
 ## Troubleshooting
 
-**Agents not connecting?**
-Verify all services are running by checking `http://localhost:9000-9005`
+**Agents not connecting?** Check that each Python agent is running and reachable on the ports above.
 
-**Missing API keys?**
-Ensure `.env` contains `GOOGLE_API_KEY` and `OPENAI_API_KEY`
+**Missing API keys?** Ensure `.env` contains `GOOGLE_API_KEY` and `OPENAI_API_KEY`.
 
-**Python issues?**
-Activate the virtual environment: `cd agents && source .venv/bin/activate`
+**Python issues?** Activate the virtual environment: `cd agents && source .venv/bin/activate`.
 
 ## Learn More
 

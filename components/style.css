@@ -37,7 +37,7 @@
 
 /**
  * Fade in and slide up animation
- * Used by ItineraryCard, BudgetBreakdown, and WeatherCard components
+ * Used by CarePlanCard, CostBreakdownCard, and AvailabilityCard components
  * to create smooth entrance effects when data is received from agents
  */
 @keyframes fadeInUp {

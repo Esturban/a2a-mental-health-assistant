@@ -16,8 +16,9 @@ const splineSansMono = Spline_Sans_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AG-UI + A2A Multi-Agent Demo",
-  description: "Agent-to-Agent communication demo with ADK and LangGraph using A2A Protocol",
+  title: "Mental Health Booking Assistant",
+  description:
+    "Coordinated multi-agent experience for therapist intake, availability, care planning, and cost transparency.",
 };
 
 export default function RootLayout({

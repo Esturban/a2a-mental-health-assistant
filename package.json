@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently --names \"UI,Orch,Itin,Weather,Rest,Budget\" --prefix-colors \"cyan,gray,green,blue,blue,blue\" \"npm run dev:ui\" \"npm run dev:orchestrator\" \"npm run dev:itinerary\" \"npm run dev:weather\" \"npm run dev:restaurant\" \"npm run dev:budget\"",
+    "dev": "concurrently --names \"UI,Orch,Care,Avail,Res,Ins\" --prefix-colors \"cyan,gray,green,blue,blue,blue\" \"npm run dev:ui\" \"npm run dev:orchestrator\" \"npm run dev:careplan\" \"npm run dev:availability\" \"npm run dev:resources\" \"npm run dev:insurance\"",
     "dev:ui": "next dev --turbopack",
     "dev:orchestrator": "agents/.venv/bin/python agents/orchestrator.py",
-    "dev:itinerary": "agents/.venv/bin/python agents/itinerary_agent.py",
-    "dev:budget": "agents/.venv/bin/python agents/budget_agent.py",
-    "dev:restaurant": "agents/.venv/bin/python agents/restaurant_agent.py",
-    "dev:weather": "agents/.venv/bin/python agents/weather_agent.py",
+    "dev:careplan": "agents/.venv/bin/python agents/care_plan_agent.py",
+    "dev:insurance": "agents/.venv/bin/python agents/insurance_agent.py",
+    "dev:resources": "agents/.venv/bin/python agents/resources_agent.py",
+    "dev:availability": "agents/.venv/bin/python agents/availability_agent.py",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

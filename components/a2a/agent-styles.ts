@@ -15,8 +15,8 @@ import { AgentStyle } from "../types";
  *
  * This function determines the visual branding (colors, icons, framework label)
  * for agent badges in the UI. It helps users visually distinguish between:
- * - LangGraph agents (Itinerary, Restaurant)
- * - ADK agents (Budget, Weather)
+ * - LangGraph agents (Care Plan)
+ * - ADK agents (Availability, Resources, Insurance)
  * - The Orchestrator
  *
  * @param agentName - The name of the agent (case-insensitive)
@@ -37,18 +37,22 @@ export function getAgentStyle(agentName: string): AgentStyle {
   const nameLower = agentName.toLowerCase();
 
   // LangGraph agents - Green branding
-  if (nameLower.includes("itinerary") || nameLower.includes("restaurant")) {
+  if (nameLower.includes("care") || nameLower.includes("plan")) {
     return {
       bgColor: "bg-gradient-to-r from-emerald-100 to-green-100",
       textColor: "text-emerald-800",
       borderColor: "border-emerald-400",
-      icon: "🔗",
+      icon: "🧠",
       framework: "LangGraph",
     };
   }
 
   // ADK agents - Blue/Google branding
-  if (nameLower.includes("budget") || nameLower.includes("weather")) {
+  if (
+    nameLower.includes("availability") ||
+    nameLower.includes("resource") ||
+    nameLower.includes("insurance")
+  ) {
     return {
       bgColor: "bg-gradient-to-r from-blue-100 to-sky-100",
       textColor: "text-blue-800",
